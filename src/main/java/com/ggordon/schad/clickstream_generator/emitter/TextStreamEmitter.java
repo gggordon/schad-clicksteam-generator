@@ -98,10 +98,12 @@ public class TextStreamEmitter {
 										break;
 									}
 								}
+								logger.debug("Goodbye another client");
 								
 							}
 							
 						});
+						logger.debug("Currently "+clientThreadPool.getActiveCount()+" clients");
 						
 					} catch (IOException e) {
 						
