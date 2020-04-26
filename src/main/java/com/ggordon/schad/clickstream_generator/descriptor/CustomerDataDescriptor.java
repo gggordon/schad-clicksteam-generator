@@ -1,6 +1,7 @@
 package com.ggordon.schad.clickstream_generator.descriptor;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -27,40 +28,51 @@ public class CustomerDataDescriptor implements IDataDescripter<Object, Integer>{
 	
 	static {
 		try {
-			BufferedReader in = new BufferedReader(
-					new FileReader(
-							CustomerDataDescriptor
-							   .class
-							   .getClassLoader()
-							   .getResource(filePath)
-							   .getFile()
-							)
-					);
-			while(in.ready()) {
-                String[] record = in.readLine().split(",");
-                
-                try {
-                    int customerId = Integer.parseInt(record[0]),
-                        zipCode = Integer.parseInt( record[record.length-1]);
-                    
-                    if(customerId>maximumId)maximumId = customerId;
-                    if(customerId < minimumId)minimumId = customerId;
-                    if(zipCode > maxZipCode)maxZipCode = zipCode;
-                    if(zipCode < minZipCode)minZipCode = zipCode;
-                }catch(NumberFormatException e) {
-                	continue;
-                }
-                
-                
+			String resourceFilePath = CustomerDataDescriptor
+					   .class
+					   .getClassLoader()
+					   .getResource(filePath)
+					   .getFile();
+			if(!new File(resourceFilePath).exists()) {
+				logger.debug("Resource file - "+resourceFilePath+" does not exist");
+				initializeDefaultValues();
+			}else {
+				BufferedReader in = new BufferedReader(
+						new FileReader(
+								resourceFilePath
+						)
+				);
+				while(in.ready()) {
+	                String[] record = in.readLine().split(",");
+	                
+	                try {
+	                    int customerId = Integer.parseInt(record[0]),
+	                        zipCode = Integer.parseInt( record[record.length-1]);
+	                    
+	                    if(customerId>maximumId)maximumId = customerId;
+	                    if(customerId < minimumId)minimumId = customerId;
+	                    if(zipCode > maxZipCode)maxZipCode = zipCode;
+	                    if(zipCode < minZipCode)minZipCode = zipCode;
+	                }catch(NumberFormatException e) {
+	                	continue;
+	                }
+	                
+	                
+				}
+				in.close();
 			}
-			in.close();
 		}catch(IOException e) {
 			logger.error("Unable to initialize customer details from file",e);
-			minimumId = 1;
-			maximumId=12344;
-			minZipCode=603;
-			maxZipCode=99204;
+			initializeDefaultValues();
 		}
+	}
+	
+	private static void initializeDefaultValues() {
+		logger.debug("Initializing using default values");
+		minimumId = 1;
+		maximumId=12344;
+		minZipCode=603;
+		maxZipCode=99204;
 	}
 	public Integer getMinimumIdentifierValue() {
 		return minimumId;

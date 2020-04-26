@@ -1,6 +1,7 @@
 package com.ggordon.schad.clickstream_generator.descriptor;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
@@ -26,38 +27,54 @@ public class ProductDataDescriptor implements IDataDescripter<Object, Integer>{
 	
 	static {
 		try {
-			BufferedReader in = new BufferedReader(
-					new FileReader(
-							ProductDataDescriptor
-							   .class
-							   .getClassLoader()
-							   .getResource(filePath)
-							   .getFile()
-							)
-					);
-			while(in.ready()) {
-                String[] record = in.readLine().split(",");
-                
-                try {
-                    int productId = Integer.parseInt(record[0]);
-                    
-                    if(productId>maximumId)maximumId = productId;
-                    if(productId < minimumId)minimumId = productId;
-                    
-                }catch(NumberFormatException e) {
-                	continue;
-                }
-                
-                
+			String resourceFilePath = ProductDataDescriptor
+					   .class
+					   .getClassLoader()
+					   .getResource(filePath)
+					   .getFile();
+			if(!new File(resourceFilePath).exists()) {
+				logger.debug("Resource file - "+resourceFilePath+" does not exist");
+				initializeDefaultValues();
+			}else {
+				BufferedReader in = new BufferedReader(
+						new FileReader(
+								ProductDataDescriptor
+								   .class
+								   .getClassLoader()
+								   .getResource(filePath)
+								   .getFile()
+								)
+						);
+				while(in.ready()) {
+	                String[] record = in.readLine().split(",");
+	                
+	                try {
+	                    int productId = Integer.parseInt(record[0]);
+	                    
+	                    if(productId>maximumId)maximumId = productId;
+	                    if(productId < minimumId)minimumId = productId;
+	                    
+	                }catch(NumberFormatException e) {
+	                	continue;
+	                }
+	                
+	                
+				}
+				in.close();
 			}
-			in.close();
+			
 		}catch(IOException e) {
 			logger.error("Unable to initialize customer details from file",e);
-			minimumId = 1;
-			maximumId=1344;
+			initializeDefaultValues();
 			
 		}
 	}
+	private static void initializeDefaultValues() {
+		logger.debug("Initializing using default values");
+		minimumId = 1;
+		maximumId=1344;
+	}
+	
 	public Integer getMinimumIdentifierValue() {
 		return minimumId;
 	}
