@@ -10,12 +10,12 @@ It's aim is to generate data providing clickstream insights into customer produc
 
 It will provide the following (randomly) on each iteration
 
-Customer Id
-ScrollXPosition (X position in window)
-Product Viewed Id
-ScrollYPosition (Y position in window)
-Customer Zip Code
-Date Time
+- Customer Id
+- ScrollXPosition (X position in window)
+- Product Viewed Id
+- ScrollYPosition (Y position in window)
+- Customer Zip Code
+- Date Time
 
 A sample line would look like 
 ```
@@ -78,12 +78,12 @@ docker build -t schad-streaming-generator .
 docker run --name my-schad-streaming-generator schad-streaming-generator
 ```
 #### Build Arguments Available
-port=5005 - port
-interval=1000 - interval
+- port=5005 - port
+- interval=1000 - interval
 
 #### Environment Arguments Available
-PORT=5005 - port
-INTERVAL=1000 - interval
+- PORT=5005 - port
+- INTERVAL=1000 - interval
 
 Eg. Running with an interval of 500 milliseconds
 ```
