@@ -11,10 +11,10 @@ ENV PORT=$port
 
 # Specifies how frequently a new message should be prepared
 ARG interval=1000
-ENV INTERVAl=$interval
+ENV INTERVAL=$interval
 
 WORKDIR /app
 
 COPY schad-clickstream-generator-1.0.0.jar ./
 
-CMD ["java","-jar","schad-clickstream-generator-1.0.0.jar","--port=$PORT","--interval=$INTERVAL"]
+CMD ["sh","-c","java -jar schad-clickstream-generator-1.0.0.jar --port=${PORT} --interval=${INTERVAL}"]

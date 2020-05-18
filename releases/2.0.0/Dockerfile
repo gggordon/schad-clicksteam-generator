@@ -6,19 +6,19 @@
 FROM openjdk:latest
 
 # Specifies which port the streaming context should be available to clients
-ARG port=5005
+ARG port="5005"
 ENV PORT=$port
 
 # Specifies how frequently a new message should be prepared
-ARG interval=1000
-ENV INTERVAl=$interval
+ARG interval="1000"
+ENV INTERVAL=$interval
 
-# Specifies how frequently a new message should be prepared
-ARG output_format=json
-ENV OUTPUT_FORMAT=$interval
+# Specifies the format of a message
+ARG output_format="json"
+ENV OUTPUT_FORMAT=$output_format
 
 WORKDIR /app
 
 COPY schad-clickstream-generator-2.0.0.jar ./
 
-CMD ["java","-jar","schad-clickstream-generator-2.0.0.jar","--port=$PORT","--interval=$INTERVAL","--output-format=$OUTPUT_FORMAT"]
+CMD ["sh","-c","java -jar schad-clickstream-generator-2.0.0.jar --port=${PORT} --interval=${INTERVAL} --output-format=${OUTPUT_FORMAT}"]
