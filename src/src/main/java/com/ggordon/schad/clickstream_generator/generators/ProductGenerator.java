@@ -7,7 +7,7 @@ import com.ggordon.schad.clickstream_generator.constants.ProductConstant;
 import com.ggordon.schad.clickstream_generator.descriptor.ProductDataDescriptor;
 import com.ggordon.schad.clickstream_generator.descriptor.IDataDescripter;
 
-public class ProductGenerator extends Generator {
+public class ProductGenerator  implements IGenerator {
 	
 	protected IDataDescripter<Object, Integer> dataDescriptor;
 

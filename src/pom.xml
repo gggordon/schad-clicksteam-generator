@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ggordon.schad</groupId>
 	<artifactId>clickstream_generator</artifactId>
-	<version>1.0.0</version>
+	<version>2.0.0</version>
 	<name>SCHAD Clickstream Generator</name>
 	<description>Clickstream Generator to Generate Customer Product Views on Website in a Streaming Context</description>
 	<dependencies>

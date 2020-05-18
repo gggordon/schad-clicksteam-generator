@@ -42,14 +42,5 @@ public class ProductGeneratorTest {
 		
 	}
 
-	/**
-	 * Test method for {@link com.ggordon.schad.clickstream_generator.generators.Generator#getRandomRecord(java.lang.String)}.
-	 */
-	@Test
-	public void testGetRandomRecordString() {
-		String line = instance.getRandomRecord("|");
-		assertNotNull(line);
-		assertTrue(line.length()>1);
-	}
 
 }

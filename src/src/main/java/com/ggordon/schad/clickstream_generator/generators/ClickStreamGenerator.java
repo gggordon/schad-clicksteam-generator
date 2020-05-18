@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.ggordon.schad.clickstream_generator.constants.ClickStreamConstant;
 
-public class ClickStreamGenerator extends Generator {
+public class ClickStreamGenerator implements IGenerator {
 	
 	protected IGenerator customerGenerator;
 	protected IGenerator productGenerator;

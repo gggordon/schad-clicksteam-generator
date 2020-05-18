@@ -1,11 +1,19 @@
 package com.ggordon.schad.clickstream_generator.cli;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Helper class to extract Cli Arguments
  * */
 public class CliArgumentParser {
+	private static final Logger logger = LogManager.getLogger(CliArgumentParser.class);
 	public static String PORT_PREFIX="--port=";
 	public static String EMIT_INTERVAL_PREFIX="--interval=";
+	public static String EMIT_OUTPUTFORMAT_PREFIX="--output-format=";
 	/**
 	 * Extracts port number if provided in the format
 	 *   --port=3005
@@ -21,7 +29,7 @@ public class CliArgumentParser {
     						arg.replace(PORT_PREFIX,"").trim()
     						);
     			}catch(NumberFormatException e) {
-    				//we will ignore this exception
+    				logger.error(arg+" does not have a valid number");
     			}
     		}
     	}
@@ -43,10 +51,36 @@ public class CliArgumentParser {
     						arg.replace(EMIT_INTERVAL_PREFIX,"").trim()
     						);
     			}catch(NumberFormatException e) {
-    				//we will ignore this exception
+    				logger.error(arg+" does not have a valid number");
     			}
     		}
     	}
     	return defaultInterval;
     }
+
+    /**
+	 * Extracts output format if provided in the format
+	 *   --output-format
+	 *   
+	 * @param args - String arguments accepted from the cli
+	 * @param defaultInterval default interval in the event that one was not specified
+	 * */
+	public static String getOutputFormat(String[] args, String defaultFormat) {
+		for(String arg : args) {
+    		if(arg != null && arg.contains(EMIT_OUTPUTFORMAT_PREFIX)) {
+    			
+    			String formatProvided = arg.replace(EMIT_OUTPUTFORMAT_PREFIX,"").trim().toLowerCase();
+    			switch(formatProvided) {
+    			case "text":
+    			case "json":
+    				return formatProvided;
+    			default:
+    				logger.error(arg+" does not use any of the available formats : text/json");
+    			}
+    			
+    			
+    		}
+    	}
+		return defaultFormat;
+	}
 }
